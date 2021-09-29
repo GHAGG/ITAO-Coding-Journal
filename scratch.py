@@ -4,7 +4,8 @@ from mod.condiments import *
 alldrinktypes = ["Sprite", "Diet Sprite", "Coke", "Diet Coke", "Water"]
 drinktypes = ["Sprite", "Water", "Coke"]
 entreetypes = ["Burger", "Nuggets"]
-condimenttypes = ["Ketchup", "Extra Cheese", "Caramelized Onions", "Onions", "Mustard", "Mayonnaise", "Mayo", "Pickles"]
+condimenttypes = ["Ketchup", "Extra cheese", "Caramelized onions", "Onions", "Mustard", "Mayonnaise", "Mayo", "Pickles"]
+saucetypes = ["Ketchup", "Bbq", "Honey mustard", "Mustard", "Ranch"]
 YN = ["Y", "N"]
 drinksordered = []
 allcal = []
@@ -58,7 +59,45 @@ while True:
 while True:
     entree = str(input("Would you like your meal to come with a burger or nuggets: ")).capitalize()
     if entree in entreetypes:
-        if entree == "Burger":
+        if entree == "Nuggets":
+            entree = Nuggets()
+            entreeordered.append(entree)
+            allcal.append(entree.cal())
+            times = 0
+            while True:
+                sauceyesno = str(input("Would you like any sauce for your nuggets? (Y/N) ")).capitalize()
+                if sauceyesno in YN:
+                    break
+                else:
+                    print("Please enter 'Y' or 'N' as a response")
+                    continue
+            if (sauceyesno == 'Y'):
+                while True:
+                    whichsauce = str(input("Which sauce would you like to add to your order? ")).capitalize()
+                    if whichsauce in saucetypes:
+                        sauce = Sauce(saucetype=whichsauce)
+                        break
+                    else:
+                        while True:
+                            seesaucesyesno = str(input("That sauce is not available. Would you like to see our sauce menu before selecting another sauce? (Y/N) ")).capitalize()
+                            if seesaucesyesno in YN:
+                                break
+                            else:
+                                print("Please enter 'Y' or 'N' as a response")
+                                continue
+                        if seesaucesyesno == "Y":
+                            print(saucetypes)
+                            continue
+                        else:
+                            continue
+                allcal.append(sauce.cal())
+                print("An entree of {} with {} sauce has been added to your order".format(entree, sauce))
+                break
+            else:
+                print("An entree of {} with no sauce has been added to your order".format(entree))
+                break
+
+        elif entree == "Burger":
             entree = Burger()
             entreeordered.append(entree)
             allcal.append(entree.cal())
