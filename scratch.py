@@ -2,6 +2,7 @@ from mod.drinks import *
 from mod.entree import *
 from mod.condiments import *
 from mod.sides import *
+from mod.toy import *
 alldrinktypes = ["Sprite", "Diet Sprite", "Coke", "Diet Coke", "Water"]
 drinktypes = ["Sprite", "Water", "Coke"]
 entreetypes = ["Burger", "Nuggets"]
@@ -9,12 +10,15 @@ condimenttypes = ["Ketchup", "Extra cheese", "Caramelized onions", "Onions", "Mu
 saucetypes = ["Ketchup", "Bbq", "Honey mustard", "Mustard", "Ranch"]
 sidetypes = ["Fries", "Apple slices", "Apples"]
 frytypes = ["Small", "Medium", "Large"]
+toytypes = ["Pokemon cards", "Star wars toy", "Princess toy", "Car toy", "Plush toy"]
+toydict = {1:"Pokemon cards", 2:"Star wars toy", 3:"Princess toy", 4:"Car toy", 5:"Plush toy"}
 YN = ["Y", "N"]
 drinksordered = []
 allcal = []
 entreeordered = []
 condimentsordered = []
 sideordered = []
+toyordered = []
 
 print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
 print("%%%%% H A P P Y  M E A L %%%%%")
@@ -35,6 +39,7 @@ while True:
             print("A {} has 0 calories".format(drink))
             allcal.append(0)
             drinksordered.append(drink)
+            break
         elif drink in drinktypes:
             if (drink == "Sprite"):
                 drink = Sprite()
@@ -45,6 +50,7 @@ while True:
             print("A {} has {} calories".format(drink.syrup, drink.cal()))
             allcal.append(drink.cal())
             drinksordered.append(drink)
+            break
         elif drink not in drinktypes:
             print("The drink you ordered is not in our menu, please order a different drink")
             continue
@@ -153,7 +159,7 @@ while True:
         break
     else:
         print("Please enter 'Y' or 'N' as a response.")
-    continue
+        continue
 if sides == "Y":
     while True:
         sidechoice = str(input("Which side would you like to order, apple slices or fries? ")).capitalize()
@@ -177,10 +183,47 @@ if sides == "Y":
             sideorder = Fries()
     elif sidechoice == "Apple slices":
         sideorder = AppleSlices()
-    print("A side of {} has been added to your order")
+    print("A side of {} has been added to your order".format(sideorder))
     sideordered.append(sideorder)
     allcal.append(sideorder.cal())
 
-
-totalcalories = sum(allcal)
-print("So far, your order has {} calories".format(totalcalories))
+while True:
+    toysee = str(input("Your happy meal comes with a toy, would you like to see which toys we have available? (Y/N) ")).capitalize()
+    if toysee in YN:
+        break
+    else:
+        print("Please enter 'Y' or 'N' as a response.")
+        continue
+if toysee == "Y":
+    print(toydict)
+while True:
+    care = str(input("Do you care which toy gets added to your meal? (Y/N) ")).capitalize()
+    if care in YN:
+        break
+    else:
+        print("Please enter 'Y' or 'N' as a response")
+        continue
+if care == "Y":
+    while True:
+        print("As a reminder, your toy options are as follows: ")
+        print(toydict)
+        toychoice = input("Please select the integer corresponding to the toy you want. (int) ")
+        try:
+            toychoice = int(toychoice)
+        except:
+            print("Please enter an integer as a response")
+            continue
+        else:
+            if toychoice not in range(1,len(toytypes)):
+                print("Please select an integer from 1 to 5")
+                continue
+            else:
+                toy = Toy(toychoice)
+                toyordered.append(toy)
+                print("A {} has been added to your order".format(toy))
+                break
+elif care == "N":
+    pass
+    
+allcalories = sum(allcal)
+print("So far, your order has {} calories".format(allcalories))
