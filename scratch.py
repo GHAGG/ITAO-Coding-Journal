@@ -3,6 +3,9 @@ from mod.entree import *
 from mod.condiments import *
 from mod.sides import *
 from mod.toy import *
+
+import random as r
+
 alldrinktypes = ["Sprite", "Diet Sprite", "Coke", "Diet Coke", "Water"]
 drinktypes = ["Sprite", "Water", "Coke"]
 entreetypes = ["Burger", "Nuggets"]
@@ -11,7 +14,7 @@ saucetypes = ["Ketchup", "Bbq", "Honey mustard", "Mustard", "Ranch"]
 sidetypes = ["Fries", "Apple slices", "Apples"]
 frytypes = ["Small", "Medium", "Large"]
 toytypes = ["Pokemon cards", "Star wars toy", "Princess toy", "Car toy", "Plush toy"]
-toydict = {1:"Pokemon cards", 2:"Star wars toy", 3:"Princess toy", 4:"Car toy", 5:"Plush toy"}
+#toydict = {1:"Pokemon cards", 2:"Star wars toy", 3:"Princess toy", 4:"Car toy", 5:"Plush toy"}
 YN = ["Y", "N"]
 drinksordered = []
 allcal = []
@@ -195,7 +198,8 @@ while True:
         print("Please enter 'Y' or 'N' as a response.")
         continue
 if toysee == "Y":
-    print(toydict)
+    blank = Toy(keynum = 1)
+    print(blank.toydict)
 while True:
     care = str(input("Do you care which toy gets added to your meal? (Y/N) ")).capitalize()
     if care in YN:
@@ -206,24 +210,58 @@ while True:
 if care == "Y":
     while True:
         print("As a reminder, your toy options are as follows: ")
-        print(toydict)
-        toychoice = input("Please select the integer corresponding to the toy you want. (int) ")
-        try:
-            toychoice = int(toychoice)
-        except:
-            print("Please enter an integer as a response")
-            continue
-        else:
-            if toychoice not in range(1,len(toytypes)):
-                print("Please select an integer from 1 to 5")
-                continue
-            else:
-                toy = Toy(toychoice)
-                toyordered.append(toy)
-                print("A {} has been added to your order".format(toy))
-                break
+        print(blank.toydict)
+        toychoice = int(input("Please select the integer corresponding to the toy you want. (int) "))
+        #try:
+        #    toychoice = int(toychoice)
+        #except:
+        #    print("Please enter an integer as a response")
+        #    continue
+        #else:
+        #    if toychoice not in range(1,len(toytypes)):
+        #        print("Please select an integer from 1 to 5")
+        #        continue
+        #else:
+        toy = Toy(keynum = toychoice)
+        toyordered.append(toy)
+        print("{} has been added to your Happy Meal".format(toy.toyval))
+        break
 elif care == "N":
-    pass
-    
+    toychoice = r.randint(1, len(toytypes))
+    toy = Toy(keynum=toychoice)
+    toyordered.append(toy)
+    print("{} has been added to your Happy Meal".format(toy.toyval))
+
+
 allcalories = sum(allcal)
-print("So far, your order has {} calories".format(allcalories))
+print("Your order has a total of {} calories".format(allcalories))
+
+while True:
+    see = input("Would you like to see a breakdown of your order? (Y/N) ").capitalize()
+    if see in YN:
+        break
+    else:
+        print("Please enter 'Y' or 'N' as a response")
+        continue
+if see == "N":
+    print("Your order is being made, have a nice day!")
+else:
+    if "Burger" in entreeordered:
+        if len(condimentsordered) == 0:
+            if len(sideordered) == 0:
+                print("Today you ordered {} to drink, chose an entree of {} with no condiments, no sides, and (a) {}".format(drinksordered, entreeordered, toyordered))
+            else:
+                print("Today you ordered {} to drink, chose an entree of {} with no condiments, a side of {}, and (a) {}".format(drinksordered, entreeordered, sideordered, toyordered))
+        else:
+            if len(sideordered) == 0:
+                print("Today you ordered {} to drink, chose an entree of {} with {}, no sides, and (a) {}".format(drinksordered, entreeordered, condimentsordered, toyordered))
+            else:
+                print(
+                    "Today you ordered {} to drink, chose an entree of {} with {}, a side of {}, and (a) {}".format(drinksordered, entreeordered, condimentsordered, sideordered, toyordered))
+    else:
+        if len(sideordered) == 0:
+            print("Today you ordered {} to drink, chose an entree of {}, no sides, and (a) {}".format(drinksordered, entreeordered, toyordered))
+        else:
+            print("Today you ordered {} to drink, chose an entree of {}, a side of {}, and (a) {}".format(drinksordered, entreeordered, sideordered, toyordered))
+
+print("Goodbye!")
